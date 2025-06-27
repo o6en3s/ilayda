@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Duygusal Karar</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://pbs.twimg.com/media/FWcR9dCXwAEnipm.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      flex-direction: column;
+    }
+
+    .btn {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #barisBtn { background-color: #4CAF50; color: white; }
+    #yokBtn { background-color: #f44336; color: white; }
+
+    #mesaj, #link, #kalpler {
+      color: white;
+      margin-top: 20px;
+      font-size: 24px;
+      text-align: center;
+      text-shadow: 2px 2px 4px black;
+    }
+
+    a {
+      color: yellow;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #kalpler {
+      font-size: 32px;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.2); }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn" id="barisBtn">Barışalım Artık</button>
+  <button class="btn" id="yokBtn">Yok</button>
+
+  <div id="mesaj"></div>
+  <div id="link"></div>
+  <div id="kalpler" class="hidden">❤️❤️❤️❤️❤️</div>
+
+  <script>
+    const barisBtn = document.getElementById("barisBtn");
+    const yokBtn = document.getElementById("yokBtn");
+    const mesaj = document.getElementById("mesaj");
+    const link = document.getElementById("link");
+    const kalpler = document.getElementById("kalpler");
+
+    let yokClickCount = 0;
+    let hayirClickCount = 0;
+
+    yokBtn.addEventListener("click", () => {
+      yokClickCount++;
+      yokBtn.style.fontSize = `${20 - yokClickCount * 1}px`;
+      barisBtn.style.fontSize = `${20 + yokClickCount * 3}px`;
+
+      if (yokClickCount >= 5) {
+        yokBtn.classList.add("hidden");
+        link.innerHTML = `
+          <a href="https://www.youtube.com/watch?v=ItISVW3o0X0" target="_blank">Pinhani - Bilir O Beni (YouTube)</a><br>
+          <button class="btn" id="ciddenBtn">Cidden mi?</button>
+        `;
+
+        document.getElementById("ciddenBtn").addEventListener("click", () => {
+          link.innerHTML = "";
+          mesaj.innerText = "Hâlâ zaman mı istiyorsun?";
+          mesaj.innerHTML += `
+            <br><button class="btn" id="evetBtn">Evet</button>
+            <button class="btn" id="hayirBtn">Hayır</button>
+          `;
+
+          document.getElementById("evetBtn").addEventListener("click", () => {
+            mesaj.innerText = "Peki o zaman ama şunu bil: Seni çok seviyorum.";
+            kalpler.classList.remove("hidden");
+          });
+
+          document.getElementById("hayirBtn").addEventListener("click", () => {
+            mesaj.innerHTML = `Barışıyor muyuz o zaman?<br><button class="btn" id="hayirTekrarBtn">Hayır</button>`;
+            let barisBtnSize = 20;
+            const hayirTekrarBtn = document.getElementById("hayirTekrarBtn");
+
+            hayirTekrarBtn.addEventListener("click", () => {
+              hayirClickCount++;
+              const barisBtnum = document.createElement("button");
+              barisBtnum.innerText = "Barışıyor muyuz";
+              barisBtnum.className = "btn";
+              barisBtnum.style.fontSize = `${50 + hayirClickCount * 50}px`;
+
+              mesaj.innerHTML = "";
+              mesaj.appendChild(barisBtnum);
+              mesaj.appendChild(hayirTekrarBtn);
+
+              if (hayirClickCount >= 3) {
+                hayirTekrarBtn.remove();
+                const zamanVerBtn = document.createElement("button");
+                zamanVerBtn.innerText = "Zaman ver";
+                zamanVerBtn.className = "btn";
+                mesaj.appendChild(document.createElement("br"));
+                mesaj.appendChild(zamanVerBtn);
+
+                zamanVerBtn.addEventListener("click", () => {
+                  mesaj.innerText = "Tamam o zaman, yazmanı bekliyorum.";
+                  kalpler.classList.remove("hidden");
+                });
+              }
+            });
+          });
+        });
+      }
+    });
+
+    barisBtn.addEventListener("click", () => {
+      barisBtn.classList.add("hidden");
+      yokBtn.classList.add("hidden");
+      mesaj.textContent = "Wp geç, seni çok özledim.";
+    });
+  </script>
+</body>
+</html>
